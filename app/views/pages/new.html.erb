@@ -1,0 +1,57 @@
+<div class="max-w-4xl mx-auto px-4 py-6 sm:py-12">
+  <div class="text-center mb-8 sm:mb-12">
+    <h1 class="text-3xl sm:text-4xl font-bold text-indigo-900"><%= @page.new_record? ? "Create New Page" : "Edit Page" %></h1>
+    <p class="mt-2 text-sm sm:text-base text-indigo-600">Share your thoughts and ideas</p>
+  </div>
+    
+  <%= form_with(model: @page) do |form| %>
+    <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-4 sm:p-8 space-y-6 sm:space-y-8">
+      <!-- Title Input -->
+      <div class="space-y-2">
+        <%= form.label :title, "Page Title", class: "block text-base sm:text-lg font-semibold text-indigo-900" %>
+        <%= form.text_field :title, 
+            class: "mt-2 block w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-gray-200 bg-gray-50 text-gray-800 text-sm sm:text-base shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:bg-white", 
+            placeholder: "Enter your page title" %>
+      </div>
+
+      <!-- Content Input -->
+      <div class="space-y-2">
+        <%= form.label :content, "Page Content", class: "block text-base sm:text-lg font-semibold text-indigo-900" %>
+        <div class="mt-2 prose max-w-none">
+          <%= form.rich_text_area :content, 
+              class: "block w-full rounded-lg sm:rounded-xl border border-gray-200 bg-gray-50 shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:bg-white text-sm sm:text-base", 
+              placeholder: "Start writing your content..." %>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-100">
+        <%= link_to "Cancel", pages_path, 
+            class: "w-full sm:w-auto text-center px-4 sm:px-6 py-2 sm:py-3 text-indigo-600 hover:text-indigo-800 font-medium transition-colors" %>
+            
+        <%= form.submit (@page.new_record? ? "Create Page" : "Save Changes"), 
+            class: "w-full sm:w-auto text-center px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white font-medium rounded-lg sm:rounded-xl shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all" %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @page.errors.any? %>
+    <div class="mt-4 sm:mt-6">
+      <div class="bg-red-50 border border-red-200 rounded-lg sm:rounded-xl p-3 sm:p-4">
+        <div class="flex items-center mb-2">
+          <svg class="w-4 sm:w-5 h-4 sm:h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+          </svg>
+          <h3 class="text-xs sm:text-sm font-medium text-red-800">
+            <%= pluralize(@page.errors.count, "error") %> prohibited this page from being saved:
+          </h3>
+        </div>
+        <ul class="list-disc list-inside text-xs sm:text-sm text-red-700">
+          <% @page.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</div>
